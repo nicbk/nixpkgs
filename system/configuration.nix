@@ -31,6 +31,7 @@ in
       efi.canTouchEfiVariables = true;
     };
     supportedFilesystems = [ "zfs" ];
+    cleanTmpDir = true;
     initrd.luks.devices = {
       "root" = {
         device = "/dev/disk/by-uuid/" + private-config.luksUuid;
