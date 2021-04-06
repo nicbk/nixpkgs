@@ -22,7 +22,7 @@
 	border-color: @white;
 	border-style: solid;
 	border-radius: 0px;
-	background-color: rgba(0, 0, 0, 0.7);
+	background-color: rgba(0, 0, 0, 0.3);
 }
 
 .inner-pad {

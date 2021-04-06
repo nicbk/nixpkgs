@@ -7,30 +7,32 @@
     settings = {
       global = {
         follow = "keyboard";
-        geometry = "600x8-45+45";
-        transparency = 5;
-        frame_color = "#808080";
-        frame_width = 2;
-        separator_height = 2;
+        geometry = "600x8-45+60";
+        transparency = 25;
+        frame_color = "#303030";
+        frame_width = 1;
+        separator_height = 1;
         separator_color = "#808080";
-        font = "Liberation Mono 18";
+        padding = 10;
+        horizontal_padding = 15;
+        font = "DejaVuSansMono Nerd Font 18";
         format = "<b>%s</b>\\n%b";
       };
 
       urgency_low = {
-        background = "#303030";
+        background = "#000000";
         foreground = "#999999";
         timeout = 10;
       };
 
       urgency_normal = {
-        background = "#303030";
+        background = "#000000";
         foreground = "#eeeeee";
         timeout = 10;
       };
 
       urgency_critical = {
-        background = "#303030";
+        background = "#000000";
         foreground = "#ee1010";
         timeout = 20;
       };

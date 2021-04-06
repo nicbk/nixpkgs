@@ -52,7 +52,7 @@ myGraphConfig =
   { graphPadding = 1
   , graphBorderWidth = 0
   , graphWidth = 50
-  , graphBackgroundColor = (0.0, 0.0, 0.0, 0.6)
+  , graphBackgroundColor = (0.0, 0.0, 0.0, 0.4)
   }
 
 netCfg = myGraphConfig
@@ -86,6 +86,11 @@ getFullWorkspaceNames = go <$> readAsListOfString Nothing "_NET_DESKTOP_NAMES"
 workspaceNamesLabelSetter workspace =
   fromMaybe "" . lookup (workspaceIdx workspace) <$>
             liftX11Def [] getFullWorkspaceNames
+
+hideScratchpad :: Workspace -> Bool
+hideScratchpad Workspace { workspaceState = Empty } = False
+hideScratchpad Workspace { workspaceName = "NSP" } = False
+hideScratchpad _ = True
 
 enableLogger logger level = do
   logger <- getLogger logger
@@ -122,7 +127,7 @@ main = do
         , minIcons = 0
         , getWindowIconPixbuf = myIcons
         , widgetGap = 0
-        , showWorkspaceFn = hideEmpty
+        , showWorkspaceFn = hideScratchpad
         , updateRateLimitMicroseconds = 100000
         , labelSetter = workspaceNamesLabelSetter
         }

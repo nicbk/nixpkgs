@@ -53,7 +53,7 @@ in
       blender
       texlive.combined.scheme-full
       rtv
-#      tor-browser-bundle-bin
+      tor-browser-bundle-bin
       multimc
       python3
       guile

@@ -17,7 +17,7 @@ in
 
   home = {
     packages = [ pkgs.feh ]; 
-    file.".xmonad/background".source = "${config.xdg.dataHome}/backgrounds/cityscape-dark-futuristic-buildings-art.jpg";
+    file.".xmonad/background".source = "${config.xdg.dataHome}/backgrounds/background";
   };
 
   xsession = {

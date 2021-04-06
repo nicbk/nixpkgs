@@ -7,8 +7,8 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
-import XMonad.Layout.Tabbed
 import XMonad.Layout.TwoPane
+import XMonad.Util.Scratchpad
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
 
@@ -43,7 +43,7 @@ main = do
     , layoutHook = myLayout
     , logHook = myLogHook
     , handleEventHook = docksEventHook <+> handleEventHook defaultConfig
-    , manageHook = manageDocks <+> manageSpawn <+> manageHook defaultConfig
+    , manageHook = manageDocks <+> manageSpawn <+> manageScratchPad <+> manageHook defaultConfig
     , keys = myKeys
     , startupHook = myStartupHook
     }
@@ -59,7 +59,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
       , ((modMask .|. shiftMask, xK_t), sendMessage $ JumpToLayout "Mirror Tall")
       , ((modMask, xK_p), sendMessage $ JumpToLayout "TwoPane")
       , ((modMask, xK_f), sendMessage $ JumpToLayout "Full")
-      , ((modMask .|. shiftMask, xK_f), sendMessage $ JumpToLayout "Tabbed Simplest")
       , ((modMask, xK_b), sendMessage ToggleStruts)
       , ((modMask, xK_j), windows W.focusDown)
       , ((modMask .|. shiftMask, xK_j), windows W.swapDown)
@@ -77,6 +76,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
       , ((modMask .|. shiftMask, xK_space), spawn "rofi -modi window -show window -show-icons")
       , ((modMask .|. controlMask, xK_space), spawn "rofi -modi ssh -show ssh -show-icons")
       , ((modMask, xK_Return), spawn $ XMonad.terminal conf)
+      , ((modMask .|. controlMask, xK_Return), scratchpadSpawnActionCustom $ (XMonad.terminal conf) ++ " -n scratchpad")
       , ((0      , xF86XK_MonBrightnessUp), spawn "light -A 10")
       , ((modMask, xF86XK_MonBrightnessUp), spawn "light -A 5")
       , ((modMask .|. shiftMask, xF86XK_MonBrightnessUp), spawn "light -A 1")
@@ -93,31 +93,23 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
       , (f, m) <- [(viewScreen def, 0), (sendToScreen def, shiftMask)]
       ]
 
-myTabConfig = def { activeColor = "#505050"
-                  , inactiveColor = "#404040"
-                  , urgentColor = "#aa4040"
-                  , activeBorderColor = "#8c8c8c"
-                  , inactiveBorderColor = "404040"
-                  , urgentBorderColor = "aa0000"
-                  , activeTextColor = "#eeeeee"
-                  , inactiveTextColor = "#eeeeee"
-                  , urgentTextColor = "#eeeeee"
-                  , fontName = "xft:DejaVu Sans Mono:style=Book:pixelsize=16"
-                  , decoHeight = 22 
-                  }
-
 layoutDefaultConfig = avoidStruts $ noBorders $
     Tall 1 (3/100) (1/2)
     ||| Mirror (Tall 1 (3/100) (1/2))
     ||| TwoPane (3/100) (1/2)
-    ||| tabbed shrinkText myTabConfig
     ||| Full
 
-layoutInfoConfig = avoidStruts $ noBorders $
-    tabbed shrinkText myTabConfig
+layoutInfoConfig = avoidStruts $ noBorders $ Full
 
 myLayout = onWorkspace "\8198\61747\8198" layoutInfoConfig $
            onWorkspace "\8198\61664\8198" layoutInfoConfig $
            layoutDefaultConfig
+
+manageScratchPad = scratchpadManageHook (W.RationalRect l t w h)
+  where
+    h = 0.2
+    w = 0.2
+    t = 0.2
+    l = 0.4
 
 myLogHook = updatePointer (0.5, 0.5) (0, 0)

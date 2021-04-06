@@ -12,7 +12,7 @@
     green:            rgba ( 134, 175, 128, 100 % );
     background-color: rgba ( 0, 0, 0, 0 % );
     lightred:         rgba ( 204, 85, 51, 100 % );
-    font:             "JetBrainsMono Nerd Font 24";
+    font:             "DejaVuSansMono Nerd Font 24";
     tlightblack:      rgba ( 85, 68, 68, 80 % );
     lightmagenta:     rgba ( 153, 102, 0, 100 % );
     dark:             rgba ( 28, 28, 28, 100 % );
@@ -44,9 +44,9 @@ window {
 }
 error-message {
     padding:          11px;
-    background-color: rgba ( 28, 28, 28, 80 % );
-    border:           2px;
-    border-color:     rgb ( 140, 140, 140 );
+    background-color: rgba ( 0, 0, 0, 50 % );
+    border:           1px;
+    border-color:     rgb ( 80, 80, 80 );
     border-radius:    8px 8px 8px 8px ;
 }
 mainbox {
@@ -55,20 +55,20 @@ mainbox {
 }
 message {
     padding:          5;
-    background-color: rgba ( 28, 28, 28, 80 % );
-    border-color:     rgba ( 140, 140, 140 );
-    font:             "JetBrainsMono Nerd Font 20";
-    border:           0px 2px 2px ;
+    background-color: rgba ( 0, 0, 0, 50 % );
+    border-color:     rgba ( 80, 80, 80 );
+    font:             "DejaVuSansMono Nerd Font 20";
+    border:           0px 1px 1px ;
 }
 textbox {
     text-color: rgba ( 200, 200, 200 );
 }
 inputbar {
     padding:          11px ;
-    background-color: rgba ( 28, 28, 28, 80 % );
-    border:           2px ;
-    font:             "JetBrainsMono Nerd Font 30";
-    border-color:     rgb ( 140, 140, 140 );
+    background-color: rgba ( 0, 0, 0, 50 % );
+    border:           1px ;
+    font:             "DejaVuSansMono Nerd Font 30";
+    border-color:     rgb ( 80, 80, 80 );
     border-radius:    8px 8px 0px 0px ;
     text-color:       rgb ( 200, 200, 200 );
 }
@@ -87,12 +87,12 @@ case-indicator {
 }
 listview {
     padding:          8px ;
-    background-color: rgba ( 28, 28, 28, 80 % );
+    background-color: rgba ( 0, 0, 0, 50 % );
     dynamic:          false;
-    border-color:     rgb ( 140, 140, 140 );
+    border-color:     rgb ( 80, 80, 80 );
     lines:            10;
     border-radius:    0px 0px 8px 8px ;
-    border:           0px 2px 2px ;
+    border:           0px 1px 1px ;
 }
 element {
     padding:          3px ;
@@ -147,7 +147,7 @@ button {
     background-color: var(tlightblack);
     border-radius:    4px 0px 0px 4px ;
     font:             "FontAwesome 22";
-    border:           2px 0px 2px 2px ;
+    border:           1px 0px 1px 1px ;
     horizontal-align: 0.50;
     border-color:     var(foreground);
 }
@@ -155,5 +155,5 @@ button selected.normal {
     background-color: var(backlight);
     border-color:     var(foreground);
     text-color:       var(dark);
-    border:           2px 0px 2px 2px ;
+    border:           1px 0px 1px 1px ;
 }
