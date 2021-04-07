@@ -28,6 +28,6 @@ general.multipledays=yes
 general.periodicsave=2
 general.systemevents=yes
 general.systemdialogs=yes
-notification.command=notify-send -t 5000 Upcoming Deadline
+notification.command=calcurse -n | xargs -0 notify-send "Upcoming"
 notification.notifyall=all
 notification.warning=300
