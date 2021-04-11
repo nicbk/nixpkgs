@@ -49,6 +49,7 @@ nmap <silent> <c-l> :wincmd l<CR>
 nmap <silent> <c-p> :tabp<CR>
 nmap <silent> <c-n> :tabn<CR>
 
+map <leader>s <Plug>(easymotion-s)
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>g :GFiles<CR>
 

@@ -14,6 +14,7 @@ let
           vim-airline-themes
           vim-devicons
           auto-pairs
+          easymotion
         ];
         opt = [ onedark-vim ];
       };
