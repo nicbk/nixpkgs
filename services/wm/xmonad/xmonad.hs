@@ -54,7 +54,6 @@ myWorkspaces = [ "\8198\61728\8198", "\8198\61486\8198", "\8198\61747\8198", "\8
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
       [ ((modMask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
       , ((modMask .|. shiftMask, xK_Escape), spawn "xmonad --recompile && xmonad --restart")
-      , ((modMask .|. shiftMask, xK_m), spawn handleMonitors) -- Requires definition of handleMonitors with path to script
       , ((modMask, xK_t), sendMessage $ JumpToLayout "Tall")
       , ((modMask .|. shiftMask, xK_t), sendMessage $ JumpToLayout "Mirror Tall")
       , ((modMask, xK_p), sendMessage $ JumpToLayout "TwoPane")

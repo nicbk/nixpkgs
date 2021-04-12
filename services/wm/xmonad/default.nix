@@ -1,18 +1,9 @@
 { config, pkgs, ... }:
 
-let
-  private-config = import ../../../../private/default.nix {
-    config = config;
-  };
-
-  handle-monitors = pkgs.callPackage (import ./../../../misc/handle-monitors/default.nix) {
-    userHome = private-config.userHome;
-    cpupower = pkgs.linuxPackages.cpupower;
-  };
-in
 {
   xresources.properties = {
     "Xcursor.size" = 18;
+    "Xft.dpi" = 96;
   };
 
   home = {
@@ -26,9 +17,7 @@ in
     windowManager.xmonad = {
       enable = true;
       enableContribAndExtras = true;
-      config = pkgs.writeText "xmonadNew.hs" (
-        (builtins.readFile ./xmonad.hs) + "\nhandleMonitors = \"${handle-monitors}\""
-      );
+      config = ./xmonad.hs;
     };
   };
 }

@@ -1,2 +1,8 @@
 xrdb -merge ~/.Xresources
+if xrandr -q | grep -q "DP-2 connected"
+then
+  xrandr --setprovideroutputsource 1 0
+  xrandr --output eDP-1-1 --auto --right-of DP-2
+  xmonad --restart
+fi
 exec ~/.xsession

@@ -12,7 +12,6 @@ let
   veikk-linux-driver = pkgs.callPackage (import (configDir + "/misc/linux/veikk-linux-driver")) {
     kernel = pkgs.linuxPackages_hardened.kernel;
   };
-  nvidia-offload = pkgs.callPackage (import (configDir + "/misc/nvidia-offload")) {};
 in
 {
   imports = [
@@ -92,7 +91,7 @@ in
     };
     xserver = {
       enable = true;
-      videoDrivers = [ "nvidia" ];
+      videoDrivers = [ "nvidia" "modesetting" ];
       useGlamor = true;
       xkbOptions = "altwin:prtsc_rwin,compose:ralt";
       layout = "us";
@@ -102,6 +101,53 @@ in
         xmonad.enableContribAndExtras = true;
       };
       libinput.enable = true;
+      config =
+      ''
+        Section "Monitor"
+          Identifier "Monitor[0]"
+        EndSection
+
+        Section "ServerLayout"
+          Identifier "Layout[all]"
+          Screen "Screen-nvidia[0]"
+          Inactive "Device-modesetting[0]"
+          Option "AllowNVIDIAGPUScreens"
+        EndSection
+
+        Section "Device"
+          Identifier "Device-modesetting[0]"
+          Driver "modesetting"
+        EndSection
+
+        Section "Screen"
+          Identifier "Screen-modesetting[0]"
+          Device "Device-modesetting[0]"
+        EndSection
+
+        Section "Device"
+          Identifier "Device-nvidia[0]"
+          Driver "nvidia"
+          Option "AccelMethod" "glamor"
+          BusID "PCI:10:0:0"
+          Option "AllowExternalGpus"
+        EndSection
+
+        Section "Screen"
+          Identifier "Screen-nvidia[0]"
+          Device "Device-nvidia[0]"
+          Option "RandRRotation" "on"
+          DefaultDepth    24
+          Option         "Stereo" "0"
+          Option         "nvidiaXineramaInfoOrder" "DFP-3"
+          Option         "metamodes" "DP-2: nvidia-auto-select +0+0, DP-0: nvidia-auto-select +6400+0 {AllowGSYNCCompatible=On}"
+          Option         "SLI" "Off"
+          Option         "MultiGPU" "Off"
+          Option         "BaseMosaic" "off"
+          SubSection     "Display"
+              Depth       24
+          EndSubSection
+        EndSection
+      '';
     };
   };
 
@@ -119,13 +165,12 @@ in
       enable = true;
       package = pkgs.pulseaudioFull;
     };
+    bluetooth.enable = true;
     nvidia.prime = {
-      sync.allowExternalGpu = true;
       offload.enable = true;
       nvidiaBusId = "PCI:10:0:0";
       intelBusId = "PCI:0:2:0";
     };
-    bluetooth.enable = true;
     opengl = {
       enable = true;
       driSupport32Bit = true;
@@ -154,7 +199,6 @@ in
   security.chromiumSuidSandbox.enable = true;
 
   environment.systemPackages = with pkgs; [
-    nvidia-offload
     tpacpi-bat
   ];
 
