@@ -5,9 +5,10 @@ let
     config = config;
   };
   configDir = private-config.userHome + "/.config/nixpkgs";
-  handle-monitors = pkgs.callPackage (import (configDir + "/misc/handle-monitors")) {
-    userHome = private-config.userHome;
-    cpupower = pkgs.linuxPackages.cpupower;
+  startx-std = (import (configDir + "/misc/startx-std")) {
+    config = config;
+    pkgs = pkgs;
+    lib = lib;
   };
   veikk-linux-driver = pkgs.callPackage (import (configDir + "/misc/linux/veikk-linux-driver")) {
     kernel = pkgs.linuxPackages_hardened.kernel;
@@ -200,6 +201,7 @@ in
 
   environment.systemPackages = with pkgs; [
     tpacpi-bat
+    startx-std
   ];
 
   systemd.services.lidinit = {
