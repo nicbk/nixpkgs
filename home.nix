@@ -46,6 +46,7 @@ in
       killall
       usbutils
       pciutils
+      xclip
       imagemagick
       inkscape
       gimp
@@ -64,6 +65,8 @@ in
       mpv
       element-desktop
       zoom-us
+      logisim
+      eclipses.eclipse-java
     ];
 
     stateVersion = "21.03";

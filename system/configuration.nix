@@ -10,6 +10,9 @@ let
     pkgs = pkgs;
     lib = lib;
   };
+  nvidia-kernel-reset = (import (configDir + "/misc/nvidia-kernel-reset")) {
+    pkgs = pkgs;
+  };
   veikk-linux-driver = pkgs.callPackage (import (configDir + "/misc/linux/veikk-linux-driver")) {
     kernel = pkgs.linuxPackages_hardened.kernel;
   };
@@ -54,6 +57,7 @@ in
   fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
 
   networking = {
+    firewall.allowedTCPPorts = [ 8000 8080 ];
     hostId = private-config.hostId;
     hostName = private-config.hostName;
     networkmanager = {
@@ -202,6 +206,7 @@ in
   environment.systemPackages = with pkgs; [
     tpacpi-bat
     startx-std
+    nvidia-kernel-reset
   ];
 
   systemd.services.lidinit = {
