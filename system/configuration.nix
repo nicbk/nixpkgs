@@ -90,6 +90,7 @@ in
     gnome3.at-spi2-core.enable = true;
     upower.enable = true;
     hardware.bolt.enable = true;
+    tlp.enable = true;
     logind = {
       lidSwitch = "hibernate";
       lidSwitchDocked = "hibernate";
@@ -188,6 +189,8 @@ in
     };
   };
 
+  powerManagement.powertop.enable = true;
+
   users.users.${private-config.userName} = {
     isNormalUser = true;
     extraGroups = [
@@ -214,6 +217,15 @@ in
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${pkgs.bash}/bin/bash -c \"echo LID > /proc/acpi/wakeup\"";
+    };
+    wantedBy = [ "default.target" ];
+  };
+
+  systemd.services.disableradio = {
+    description = "Disable radio functionality";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.bash}/bin/bash -c \"${pkgs.utillinux}/bin/rfkill block all\"";
     };
     wantedBy = [ "default.target" ];
   };
