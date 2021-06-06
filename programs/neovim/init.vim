@@ -54,5 +54,5 @@ nnoremap <leader>f :Files<CR>
 nnoremap <leader>g :GFiles<CR>
 
 colorscheme onedark
-hi! Normal ctermbg=NONE guibg=NONE
-hi! NonText ctermbg=NONE guibg=NONE
+autocmd vimenter * hi Normal ctermbg=NONE guibg=NONE
+autocmd vimenter * hi NonText ctermbg=NONE guibg=NONE

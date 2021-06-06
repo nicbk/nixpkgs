@@ -8,9 +8,11 @@ in
 {
   imports = [
     ./misc/gtk
+    ./misc/xdg
     ./programs/bash
     ./programs/calcurse
     ./programs/chromium
+    ./programs/fzf
     ./programs/git
     ./programs/gpg
     ./programs/neomutt
@@ -47,6 +49,7 @@ in
       usbutils
       pciutils
       xclip
+      file
       imagemagick
       inkscape
       gimp
@@ -65,11 +68,12 @@ in
       mpv
       element-desktop
       zoom-us
+      gnome3.pomodoro
       logisim
       eclipses.eclipse-java
     ];
 
-    stateVersion = "21.03";
+    stateVersion = "21.05";
     username = private-config.userName;
     homeDirectory = private-config.userHome;
   };

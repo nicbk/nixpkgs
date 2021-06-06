@@ -9,14 +9,14 @@ let
       pkgs.xorg.fontadobe75dpi
     ];
 xorg-conf-std = pkgs.runCommand "xorg-conf-std"
-{ xfs = optionalString (cfg.useXFS != false)
-    ''FontPath "${toString cfg.useXFS}"'';
+{ fontPath = optionalString (cfg.fontPath != false)
+    ''FontPath "${toString cfg.fontPath}"'';
   inherit (cfg) config;
   preferLocalBuild = true;
 }
   ''
     echo 'Section "Files"' >> $out
-    echo $xfs >> $out
+    echo $fontPath >> $out
 
     for i in ${toString fontsForXServer}; do
       if test "''${i:0:''${#NIX_STORE}}" == "$NIX_STORE"; then

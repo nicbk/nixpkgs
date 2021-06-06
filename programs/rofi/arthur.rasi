@@ -125,6 +125,9 @@ element alternate.active {
 element alternate.urgent {
     foreground: var(lightred);
 }
+element-icon {
+    size: 30;
+}
 vertb {
     expand:   false;
     children: [ dummy0,mode-switcher,dummy1 ];

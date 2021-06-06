@@ -3,10 +3,6 @@
 with lib;
 
 let
-  customChromium = pkgs.ungoogled-chromium.override {
-    enableVaapi = true;
-  };
-
   browserModule = defaultPkg: name: visible:
     let browser = (builtins.parseDrvName defaultPkg.name).name;
     in {
@@ -143,7 +139,7 @@ let
 in {
   options.programs = {
     chromium-custom = browserModule pkgs.chromium "Chromium" true;
-    ungoogled-chromium-custom = browserModule customChromium "Ungoogled Chromium" false;
+    ungoogled-chromium-custom = browserModule pkgs.ungoogled-chromium "Ungoogled Chromium" false;
     google-chrome-custom = browserModule pkgs.google-chrome "Google Chrome" false;
     google-chrome-beta-custom =
       browserModule pkgs.google-chrome-beta "Google Chrome Beta" false;

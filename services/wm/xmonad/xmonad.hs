@@ -3,6 +3,7 @@ import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.SpawnOn
 import XMonad.Actions.UpdatePointer
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.NoBorders
@@ -22,10 +23,11 @@ import qualified Data.Map as M
 startup :: X ()
 startup = do
     spawnOnce "xsetroot -cursor_name left_ptr"
-    spawnOnOnce "\8198\61747\8198" "st -t \"Personal\" nvim ~/Documents/Personal/Schedule"
-    spawnOnOnce "\8198\61747\8198" "st -t \"School\" nvim ~/Documents/School/Grade-11/Schedule"
-    spawnOnOnce "\8198\61747\8198" "st -t \"Calendar\" calcurse"
     spawnOnOnce "\8198\61664\8198" "st -t \"Mail\" neomutt"
+    spawnOnOnce "\8198\61747\8198" "st -t \"Human-Algorithm\" nvim ~/Documents/Personal/human-algorithm"
+    spawnOnOnce "\8198\61747\8198" "st -t \"Personal\" nvim ~/Documents/Personal/Schedule"
+    spawnOnOnce "\8198\61747\8198" "st -t \"Plan\" nvim ~/Documents/School/Grade-11-12-Summer/Plan"
+    spawnOnOnce "\8198\61747\8198" "st -t \"Calendar\" calcurse"
 
 myStartupHook = do
     startup
@@ -43,7 +45,7 @@ main = do
     , layoutHook = myLayout
     , logHook = myLogHook
     , handleEventHook = docksEventHook <+> handleEventHook defaultConfig
-    , manageHook = manageDocks <+> manageSpawn <+> manageScratchPad <+> manageHook defaultConfig
+    , manageHook = myManageHook <+> manageDocks <+> manageSpawn <+> manageScratchPad <+> manageHook defaultConfig
     , keys = myKeys
     , startupHook = myStartupHook
     }
@@ -71,7 +73,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
       , ((modMask, xK_minus), sendMessage (IncMasterN (-1)))
       , ((modMask, xK_q), kill)
       , ((modMask, xK_space), spawn "rofi -modi drun -show drun -show-icons")
-      , ((modMask, xK_p), spawn "rofi-pass")
+      , ((modMask .|. shiftMask, xK_p), spawn "rofi-pass")
+      , ((modMask, xK_n), spawn "nmcli-rofi")
+      , ((modMask .|. shiftMask, xK_f), spawn "st -t FZF-Run -g 80x25 -e fzf-file-open")
       , ((modMask .|. shiftMask, xK_space), spawn "rofi -modi window -show window -show-icons")
       , ((modMask .|. controlMask, xK_space), spawn "rofi -modi ssh -show ssh -show-icons")
       , ((modMask, xK_Return), spawn $ XMonad.terminal conf)
@@ -112,3 +116,6 @@ manageScratchPad = scratchpadManageHook (W.RationalRect l t w h)
     l = 0.4
 
 myLogHook = updatePointer (0.5, 0.5) (0, 0)
+
+myManageHook = composeAll . concat $
+  [ [ title =? "FZF-Run" --> doCenterFloat ] ]

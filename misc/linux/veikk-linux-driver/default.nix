@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, kernel }:
+{ lib, stdenv, fetchFromGitHub, kernel }:
 
 stdenv.mkDerivation rec {
   pname = "veikk-linux-driver";
@@ -24,9 +24,8 @@ stdenv.mkDerivation rec {
     install -Dm755 veikk.ko $out/lib/modules/${kernel.modDirVersion}/kernel/drivers/veikk
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "VEIKK drawing tablet driver";
-    maintainers = [ "Nicolás Kennedy <nicolas@nicbk.com>" ];
     platforms = platforms.linux;
     homepage = "https://github.com/jlam55555/veikk-linux-driver/";
   };

@@ -13,8 +13,9 @@ let
   nvidia-kernel-reset = (import (configDir + "/misc/nvidia-kernel-reset")) {
     pkgs = pkgs;
   };
+  tmpKernel = pkgs.recurseIntoAttrs (pkgs.hardenedLinuxPackagesFor pkgs.linuxPackages_5_11.kernel {  });
   veikk-linux-driver = pkgs.callPackage (import (configDir + "/misc/linux/veikk-linux-driver")) {
-    kernel = pkgs.linuxPackages_hardened.kernel;
+    kernel = tmpKernel.kernel;
   };
 in
 {
@@ -22,8 +23,12 @@ in
     ./hardware-configuration.nix
   ];
 
-  nix.gc.automatic = true;
-  nix.gc.options = "--delete-older-than 8d";
+  nix = {
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 8d";
+    };
+  };
 
   boot = {
     kernel.sysctl = {
@@ -42,9 +47,16 @@ in
         allowDiscards = true;
       };
     };
-    kernelPackages = pkgs.linuxPackages_hardened;
+    #TODO: Change back to current when 5.10.x `null dereference` bug is patched
+    #kernelPackages = pkgs.linuxPackages_hardened;
+    kernelPackages = tmpKernel;
     kernelParams = [
       "lockdown=confidentiality"
+      "snd_intel_dspcfg.dsp_driver=1"
+      "snd_hda_intel.power_save=1"
+      "acpi_osi=Linux"
+      "i915.i915_enable_rc6=1"
+      "i915.i915_enable_fbc=1"
       "cpuidle.governor=teo"
       "msr.allow_writes=on"
     ];
@@ -87,7 +99,7 @@ in
   };
 
   services = {
-    gnome3.at-spi2-core.enable = true;
+    gnome.at-spi2-core.enable = true;
     upower.enable = true;
     hardware.bolt.enable = true;
     tlp.enable = true;
@@ -230,5 +242,5 @@ in
     wantedBy = [ "default.target" ];
   };
 
-  system.stateVersion = "20.09";
+  system.stateVersion = "21.05";
 }
