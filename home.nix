@@ -71,6 +71,7 @@ in
       gnome3.pomodoro
       logisim
       eclipses.eclipse-java
+      slack
     ];
 
     stateVersion = "21.05";

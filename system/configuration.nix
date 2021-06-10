@@ -13,9 +13,8 @@ let
   nvidia-kernel-reset = (import (configDir + "/misc/nvidia-kernel-reset")) {
     pkgs = pkgs;
   };
-  tmpKernel = pkgs.recurseIntoAttrs (pkgs.hardenedLinuxPackagesFor pkgs.linuxPackages_5_11.kernel {  });
   veikk-linux-driver = pkgs.callPackage (import (configDir + "/misc/linux/veikk-linux-driver")) {
-    kernel = tmpKernel.kernel;
+    kernel = pkgs.linuxPackages_hardened.kernel;
   };
 in
 {
@@ -47,14 +46,11 @@ in
         allowDiscards = true;
       };
     };
-    #TODO: Change back to current when 5.10.x `null dereference` bug is patched
-    #kernelPackages = pkgs.linuxPackages_hardened;
-    kernelPackages = tmpKernel;
+    kernelPackages = pkgs.linuxPackages_hardened;
     kernelParams = [
       "lockdown=confidentiality"
       "snd_intel_dspcfg.dsp_driver=1"
       "snd_hda_intel.power_save=1"
-      "acpi_osi=Linux"
       "i915.i915_enable_rc6=1"
       "i915.i915_enable_fbc=1"
       "cpuidle.governor=teo"

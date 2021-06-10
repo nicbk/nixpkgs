@@ -74,7 +74,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
       , ((modMask, xK_q), kill)
       , ((modMask, xK_space), spawn "rofi -modi drun -show drun -show-icons")
       , ((modMask .|. shiftMask, xK_p), spawn "rofi-pass")
-      , ((modMask, xK_n), spawn "nmcli-rofi")
       , ((modMask .|. shiftMask, xK_f), spawn "st -t FZF-Run -g 80x25 -e fzf-file-open")
       , ((modMask .|. shiftMask, xK_space), spawn "rofi -modi window -show window -show-icons")
       , ((modMask .|. controlMask, xK_space), spawn "rofi -modi ssh -show ssh -show-icons")
