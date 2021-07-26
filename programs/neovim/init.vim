@@ -56,3 +56,4 @@ nnoremap <leader>g :GFiles<CR>
 colorscheme onedark
 autocmd vimenter * hi Normal ctermbg=NONE guibg=NONE
 autocmd vimenter * hi NonText ctermbg=NONE guibg=NONE
+autocmd vimenter * hi LineNr guifg=#999999

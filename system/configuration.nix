@@ -16,10 +16,15 @@ let
   veikk-linux-driver = pkgs.callPackage (import (configDir + "/misc/linux/veikk-linux-driver")) {
     kernel = pkgs.linuxPackages_hardened.kernel;
   };
+  # Replace veikk-linux-driver with upstream version
+  unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+  unstableNixos = import unstableTarball {};
+  unstablePkgs = unstableNixos.pkgs;
 in
 {
   imports = [
     ./hardware-configuration.nix
+    "${unstableTarball}/nixos/modules/services/networking/globalprotect-vpn.nix"
   ];
 
   nix = {
@@ -95,6 +100,7 @@ in
   };
 
   services = {
+    globalprotect.enable = true;
     gnome.at-spi2-core.enable = true;
     upower.enable = true;
     hardware.bolt.enable = true;
@@ -169,6 +175,7 @@ in
     allowUnfree = true;
     packageOverrides = pkgs: {
       vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+      globalprotect-openconnect = unstablePkgs.globalprotect-openconnect;
     };
   };
 
@@ -218,6 +225,7 @@ in
     tpacpi-bat
     startx-std
     nvidia-kernel-reset
+    globalprotect-openconnect
   ];
 
   systemd.services.lidinit = {

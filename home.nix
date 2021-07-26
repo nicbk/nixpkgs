@@ -4,6 +4,9 @@ let
   private-config = import ./../private {
     config = config;
   };
+  unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+  unstableNixos = import unstableTarball {};
+  unstablePkgs = unstableNixos.pkgs;
 in
 {
   imports = [
@@ -23,6 +26,7 @@ in
     ./programs/ssh
     ./programs/st
     ./programs/startx
+    ./programs/tmux
     ./programs/veikk-linux-driver-gui
     ./programs/weechat
     ./programs/xournalpp
@@ -52,13 +56,13 @@ in
       file
       imagemagick
       inkscape
+      multimc
       gimp
       scrot
       blender
       texlive.combined.scheme-full
       rtv
-      tor-browser-bundle-bin
-      multimc
+      unstablePkgs.tor-browser-bundle-bin
       python3
       guile
       ghc
@@ -66,12 +70,20 @@ in
       rustup
       qemu
       mpv
+      youtube-dl
       element-desktop
+      openvpn
+      networkmanager-openvpn
       zoom-us
       gnome3.pomodoro
       logisim
       eclipses.eclipse-java
+      jdk
       slack
+      krb5
+      nfs-utils
+      sshfs-fuse
+      singularity
     ];
 
     stateVersion = "21.05";

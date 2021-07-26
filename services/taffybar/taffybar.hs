@@ -119,6 +119,7 @@ main = do
                 (\size _ -> lift $ loadPixbufByName size "application-default-icon")
       layout = layoutNew defaultLayoutConfig
       windows = windowsNew defaultWindowsConfig
+
       notifySystemD = void $ runCommandFromPath ["systemd-notify", "--ready"]
       myWorkspacesConfig =
         defaultWorkspacesConfig
@@ -145,13 +146,14 @@ main = do
               , batteryIconNew
               , cpuGraph
               , memoryGraph
-              , mpris2New
+--              , mpris2New
               , sniTrayNew
               ]
       baseConfig =
         defaultSimpleTaffyConfig
         { startWidgets =
-             workspaces : map (>>= buildContentsBox) [layout, windows]
+             workspaces : map (>>= buildContentsBox) [layout]
+--             workspaces : map (>>= buildContentsBox) [layout, windows]
         , endWidgets = longLaptopEndWidgets
         , barPosition = Top
         , barPadding = 0
