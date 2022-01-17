@@ -17,7 +17,6 @@ xorg-conf-std = pkgs.runCommand "xorg-conf-std"
   ''
     echo 'Section "Files"' >> $out
     echo $fontPath >> $out
-
     for i in ${toString fontsForXServer}; do
       if test "''${i:0:''${#NIX_STORE}}" == "$NIX_STORE"; then
         for j in $(find $i -name fonts.dir); do
@@ -25,17 +24,13 @@ xorg-conf-std = pkgs.runCommand "xorg-conf-std"
         done
       fi
     done
-
     for i in $(find ${toString cfg.modules} -type d); do
       if test $(echo $i/*.so* | wc -w) -ne 0; then
         echo "  ModulePath \"$i\"" >> $out
       fi
     done
-
     echo 'EndSection' >> $out
-
     echo "$config" >> $out
-
     sed -i '/Screen "Screen-nvidia\[0\]"/d' $out
     sed -i 's/Inactive "Device-modesetting\[0\]"/Screen "Screen-modesetting\[0\]"/g' $out
   '';

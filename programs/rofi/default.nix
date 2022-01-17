@@ -1,8 +1,5 @@
 { pkgs, ... }:
 
-let
-  st = import ../st/st.nix pkgs;
-in
 {
   programs.rofi = {
     enable = true;
@@ -12,7 +9,10 @@ in
         default_do='copyPass'
       '';
     };
-    terminal = "${st}/bin/st";
+    terminal = "${pkgs.alacritty}/bin/alacritty";
     theme = ./arthur.rasi;
+    extraConfig = {
+      matching = "fuzzy";
+    };
   };
 }

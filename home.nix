@@ -12,8 +12,8 @@ in
   imports = [
     ./misc/gtk
     ./misc/xdg
+    ./programs/alacritty
     ./programs/bash
-    ./programs/calcurse
     ./programs/chromium
     ./programs/fzf
     ./programs/git
@@ -26,8 +26,8 @@ in
     ./programs/ssh
     ./programs/st
     ./programs/startx
+    ./programs/system
     ./programs/tmux
-    ./programs/veikk-linux-driver-gui
     ./programs/weechat
     ./programs/xournalpp
     ./programs/zathura
@@ -43,6 +43,7 @@ in
 
   home = {
     packages = with pkgs; [
+      firefox
       nerdfonts
       glxinfo
       lshw
@@ -61,8 +62,7 @@ in
       scrot
       blender
       texlive.combined.scheme-full
-      rtv
-      unstablePkgs.tor-browser-bundle-bin
+      tuir 
       python3
       guile
       ghc
@@ -71,22 +71,32 @@ in
       qemu
       mpv
       youtube-dl
-      element-desktop
+      torsocks
       openvpn
       networkmanager-openvpn
       zoom-us
-      gnome3.pomodoro
+      gnome.pomodoro
+      gnome.gnome-calendar
+      libreoffice
+      gnucash
       logisim
       eclipses.eclipse-java
-      jdk
       slack
       krb5
       nfs-utils
       sshfs-fuse
       singularity
+      trash-cli
+      octaveFull
+      qt5ct
+      veikk-linux-driver-gui
+      transmission-gtk
+      unstablePkgs.jdk
+      unstablePkgs.unison-ucm
+      unstablePkgs.tor-browser-bundle-bin
     ];
 
-    stateVersion = "21.05";
+    stateVersion = "21.11";
     username = private-config.userName;
     homeDirectory = private-config.userHome;
   };

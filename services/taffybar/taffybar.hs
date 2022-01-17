@@ -112,8 +112,8 @@ main = do
   let cpuGraph = pollingGraphNew cpuCfg 5 cpuCallback
       memoryGraph = pollingGraphNew memCfg 5 memCallback
       myIcons = scaledWindowIconPixbufGetter $
-                getWindowIconPixbufFromDesktopEntry <|||>
                 getWindowIconPixbufFromEWMH <|||>
+                getWindowIconPixbufFromDesktopEntry <|||>
                 getWindowIconPixbufFromChrome <|||>
                 unscaledDefaultGetWindowIconPixbuf <|||>
                 (\size _ -> lift $ loadPixbufByName size "application-default-icon")
@@ -137,7 +137,7 @@ main = do
         textClockNewWith
         defaultClockConfig
         { clockUpdateStrategy = RoundedTargetInterval 1 0.0
-        , clockFormatString = "%a %y/%m/%d [%H:%M:%S] "
+        , clockFormatString = "%a %Y/%m/%d [%H:%M:%S] "
         }
       longLaptopEndWidgets =
         map (>>= buildContentsBox)

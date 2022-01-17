@@ -23,11 +23,10 @@ import qualified Data.Map as M
 startup :: X ()
 startup = do
     spawnOnce "xsetroot -cursor_name left_ptr"
-    spawnOnOnce "\8198\61664\8198" "st -t \"Mail\" neomutt"
-    spawnOnOnce "\8198\61747\8198" "st -t \"Human-Algorithm\" nvim ~/Documents/Personal/human-algorithm"
-    spawnOnOnce "\8198\61747\8198" "st -t \"Personal\" nvim ~/Documents/Personal/Schedule"
-    spawnOnOnce "\8198\61747\8198" "st -t \"Plan\" nvim ~/Documents/School/Grade-11-12-Summer/Plan"
-    spawnOnOnce "\8198\61747\8198" "st -t \"Calendar\" calcurse"
+    spawnOnce "setxkbmap -option altwin:prtsc_rwin"
+    spawnOnOnce "\8198\61664\8198" "alacritty -t \"Mail\" -e neomutt"
+    spawnOnOnce "\8198\61747\8198" "alacritty -t \"Plan\" -e nvim ~/Documents/School/Grade-12/Plan"
+    spawnOnOnce "\8198\61747\8198" "gnome-calendar"
 
 myStartupHook = do
     startup
@@ -36,7 +35,7 @@ myStartupHook = do
 
 main = do 
   xmonad $ ewmh $ defaultConfig
-    { terminal = "st"
+    { terminal = "alacritty"
     , borderWidth = 0
     , focusFollowsMouse = False
     , clickJustFocuses = False
@@ -50,9 +49,8 @@ main = do
     , startupHook = myStartupHook
     }
 
-myWorkspaces = [ "\8198\61728\8198", "\8198\61486\8198", "\8198\61747\8198", "\8198\61664\8198", "\8198\61853\8198","\8198\61459\8198", "\8198\62003\8198", "\8198\62056\8198", "\8198\61897\8198", "\8198\61787\8198" ]
+myWorkspaces = [ "\8198\61728\8198", "\8198\61486\8198", "\8198\61747\8198", "\8198\61664\8198", "\8198\61853\8198","\8198\61459\8198", "\8198\61723\8198", "\8198\62056\8198", "\8198\61897\8198", "\8198\61787\8198" ]
 
--- Variable `handleMonitors` added by Nix script
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
       [ ((modMask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
       , ((modMask .|. shiftMask, xK_Escape), spawn "xmonad --recompile && xmonad --restart")
@@ -75,16 +73,18 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
       , ((modMask, xK_space), spawn "rofi -modi drun -show drun -show-icons")
       , ((modMask .|. shiftMask, xK_p), spawn "rofi-pass")
       , ((modMask .|. shiftMask, xK_f), spawn "st -t FZF-Run -g 80x25 -e fzf-file-open")
+      , ((modMask .|. shiftMask, xK_n), spawn "st -t FZF-Run -g 80x25 -e nmtui")
       , ((modMask .|. shiftMask, xK_space), spawn "rofi -modi window -show window -show-icons")
       , ((modMask .|. controlMask, xK_space), spawn "rofi -modi ssh -show ssh -show-icons")
       , ((modMask, xK_Return), spawn $ XMonad.terminal conf)
-      , ((modMask .|. controlMask, xK_Return), scratchpadSpawnActionCustom $ (XMonad.terminal conf) ++ " -n scratchpad")
+      , ((modMask .|. controlMask, xK_Return), scratchpadSpawnActionCustom $ (XMonad.terminal conf) ++ " --class scratchpad")
       , ((0      , xF86XK_MonBrightnessUp), spawn "light -A 10")
       , ((modMask, xF86XK_MonBrightnessUp), spawn "light -A 5")
       , ((modMask .|. shiftMask, xF86XK_MonBrightnessUp), spawn "light -A 1")
       , ((0      , xF86XK_MonBrightnessDown), spawn "light -U 10")
       , ((modMask, xF86XK_MonBrightnessDown), spawn "light -U 5")
       , ((modMask .|. shiftMask, xF86XK_MonBrightnessDown), spawn "light -U 1")
+      , ((0, xF86XK_AudioMute), spawn "amixer set Master toggle")
       ] ++
       [ ((m .|. modMask, k), windows $ f i)
       | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])

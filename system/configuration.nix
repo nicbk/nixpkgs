@@ -13,18 +13,10 @@ let
   nvidia-kernel-reset = (import (configDir + "/misc/nvidia-kernel-reset")) {
     pkgs = pkgs;
   };
-  veikk-linux-driver = pkgs.callPackage (import (configDir + "/misc/linux/veikk-linux-driver")) {
-    kernel = pkgs.linuxPackages_hardened.kernel;
-  };
-  # Replace veikk-linux-driver with upstream version
-  unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
-  unstableNixos = import unstableTarball {};
-  unstablePkgs = unstableNixos.pkgs;
 in
 {
   imports = [
     ./hardware-configuration.nix
-    "${unstableTarball}/nixos/modules/services/networking/globalprotect-vpn.nix"
   ];
 
   nix = {
@@ -57,7 +49,6 @@ in
       "snd_intel_dspcfg.dsp_driver=1"
       "snd_hda_intel.power_save=1"
       "i915.i915_enable_rc6=1"
-      "i915.i915_enable_fbc=1"
       "cpuidle.governor=teo"
       "msr.allow_writes=on"
     ];
@@ -70,7 +61,7 @@ in
   fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
 
   networking = {
-    firewall.allowedTCPPorts = [ 8000 8080 ];
+    useDHCP = false;
     hostId = private-config.hostId;
     hostName = private-config.hostName;
     networkmanager = {
@@ -84,8 +75,6 @@ in
 
   time.timeZone = private-config.timeZone;
 
-  networking.useDHCP = false;
-
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     font = "Lat2-Terminus16";
@@ -95,13 +84,16 @@ in
   sound.enable = true;
 
   programs = {
+    dconf.enable = true;
     light.enable = true;
-    steam.enable = true;
   };
 
   services = {
     globalprotect.enable = true;
-    gnome.at-spi2-core.enable = true;
+    gnome = {
+      at-spi2-core.enable = true;
+      evolution-data-server.enable = true;
+    };
     upower.enable = true;
     hardware.bolt.enable = true;
     tlp.enable = true;
@@ -111,10 +103,11 @@ in
     };
     xserver = {
       enable = true;
-      videoDrivers = [ "nvidia" "modesetting" ];
+      videoDrivers = [ "modesetting" "nvidia" ];
       useGlamor = true;
-      xkbOptions = "altwin:prtsc_rwin,compose:ralt";
       layout = "us";
+      xkbOptions = "altwin:prtsc_rwin";
+      xkbVariant = "altgr-intl";
       displayManager.startx.enable = true;
       windowManager = {
         xmonad.enable = true;
@@ -126,24 +119,20 @@ in
         Section "Monitor"
           Identifier "Monitor[0]"
         EndSection
-
         Section "ServerLayout"
           Identifier "Layout[all]"
           Screen "Screen-nvidia[0]"
           Inactive "Device-modesetting[0]"
           Option "AllowNVIDIAGPUScreens"
         EndSection
-
         Section "Device"
           Identifier "Device-modesetting[0]"
           Driver "modesetting"
         EndSection
-
         Section "Screen"
           Identifier "Screen-modesetting[0]"
           Device "Device-modesetting[0]"
         EndSection
-
         Section "Device"
           Identifier "Device-nvidia[0]"
           Driver "nvidia"
@@ -151,7 +140,6 @@ in
           BusID "PCI:10:0:0"
           Option "AllowExternalGpus"
         EndSection
-
         Section "Screen"
           Identifier "Screen-nvidia[0]"
           Device "Device-nvidia[0]"
@@ -159,7 +147,7 @@ in
           DefaultDepth    24
           Option         "Stereo" "0"
           Option         "nvidiaXineramaInfoOrder" "DFP-3"
-          Option         "metamodes" "DP-2: nvidia-auto-select +0+0, DP-0: nvidia-auto-select +6400+0 {AllowGSYNCCompatible=On}"
+          Option         "metamodes" "DP-2: nvidia-auto-select +6400+0, DP-1: nvidia-auto-select +1920+0"
           Option         "SLI" "Off"
           Option         "MultiGPU" "Off"
           Option         "BaseMosaic" "off"
@@ -175,7 +163,6 @@ in
     allowUnfree = true;
     packageOverrides = pkgs: {
       vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
-      globalprotect-openconnect = unstablePkgs.globalprotect-openconnect;
     };
   };
 
@@ -228,23 +215,31 @@ in
     globalprotect-openconnect
   ];
 
-  systemd.services.lidinit = {
-    description = "Disable wake on lid open";
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.bash}/bin/bash -c \"echo LID > /proc/acpi/wakeup\"";
+  systemd = {
+    services = {
+      lidinit = {
+        description = "Disable wake on lid open";
+        script = "${pkgs.bash}/bin/bash -c \"echo LID > /proc/acpi/wakeup\"";
+        wantedBy = [ "basic.target" ];
+      };
+      disablemuteled = {
+        description = "Disable mute button LED";
+        script = "${pkgs.bash}/bin/bash -c \"echo 0 > /sys/class/leds/platform::mute/brightness\"";
+        wantedBy = [ "basic.target" ];
+      };
+      disableradio = {
+        description = "Disable radio functionality";
+        script = "${pkgs.bash}/bin/bash -c \"${pkgs.utillinux}/bin/rfkill block all\"";
+        wantedBy = [ "network-pre.target" ];
+      };
     };
-    wantedBy = [ "default.target" ];
+    user.services = {
+      tor = {
+        description = "Tor Daemon";
+        script = "${pkgs.tor}/bin/tor -f ~/.config/torrc";
+      };
+    };
   };
 
-  systemd.services.disableradio = {
-    description = "Disable radio functionality";
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.bash}/bin/bash -c \"${pkgs.utillinux}/bin/rfkill block all\"";
-    };
-    wantedBy = [ "default.target" ];
-  };
-
-  system.stateVersion = "21.05";
+  system.stateVersion = "21.11";
 }

@@ -107,7 +107,7 @@ color normal default default
 color indicator white default
 color sidebar_ordinary color246 default
 color sidebar_highlight red default
-color sidebar_divider brightblack default
+color sidebar_divider color244 default
 color sidebar_flagged red default
 color sidebar_new green default
 color sidebar_unread green default

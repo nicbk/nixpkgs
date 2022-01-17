@@ -31,6 +31,7 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 set clipboard=unnamedplus
+set hlsearch!
 
 autocmd VimResized * wincmd =
 autocmd Filetype html setlocal ts=2 sts=2 sw=2 et

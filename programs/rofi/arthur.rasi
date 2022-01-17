@@ -61,7 +61,7 @@ message {
     border:           0px 1px 1px ;
 }
 textbox {
-    text-color: rgba ( 200, 200, 200 );
+    text-color: rgb ( 200, 200, 200 );
 }
 inputbar {
     padding:          11px ;
@@ -102,6 +102,9 @@ element {
     border-radius:    4px ;
     text-color:       rgb ( 200, 200, 200 );
 }
+element-text {
+    text-color:       inherit;
+}
 element selected.normal {
     background-color: rgba ( 128, 128, 128, 50% );
 }
@@ -126,7 +129,7 @@ element alternate.urgent {
     foreground: var(lightred);
 }
 element-icon {
-    size: 30;
+    size: 38;
 }
 vertb {
     expand:   false;

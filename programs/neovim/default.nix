@@ -3,8 +3,7 @@
 let
   neovim = pkgs.neovim.override {
     configure = {
-      customRC = "packadd! onedark-vim\n"
-        + (builtins.readFile ./init.vim);
+      customRC = builtins.readFile ./init.vim;
       
       packages.vimPackages = with pkgs.vimPlugins; {
         start = [
@@ -15,8 +14,9 @@ let
           vim-devicons
           auto-pairs
           easymotion
+          vim-orgmode
+          onedark-vim
         ];
-        opt = [ onedark-vim ];
       };
     };
   };
