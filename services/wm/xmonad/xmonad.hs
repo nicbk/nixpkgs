@@ -25,7 +25,7 @@ startup = do
     spawnOnce "xsetroot -cursor_name left_ptr"
     spawnOnce "setxkbmap -option altwin:prtsc_rwin"
     spawnOnOnce "\8198\61664\8198" "alacritty -t \"Mail\" -e neomutt"
-    spawnOnOnce "\8198\61747\8198" "alacritty -t \"Plan\" -e nvim ~/Documents/School/Grade-12/Plan"
+    spawnOnOnce "\8198\61747\8198" "alacritty -t \"Plan\" -e nvim ~/Documents/School/UG/Year_One/Plan"
     spawnOnOnce "\8198\61747\8198" "gnome-calendar"
 
 myStartupHook = do

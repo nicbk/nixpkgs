@@ -3,8 +3,12 @@
 with lib;
 
 let
+  nixos_21_11_Snapshot = import (builtins.fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/7d5956bf56e1f300c6668704b5e9c4cd8f5296cd.tar.gz";
+  }) {};
   cfg = config.services.taffybar-custom;
-  taffybar = pkgs.taffybar.override {
+  taffybar = nixos_21_11_Snapshot.taffybar.override {
+  #taffybar = pkgs.taffybar.override {
     ghcWithPackages = cfg.haskellPackages.ghcWithPackages;
     packages = self:
       cfg.extraPackages self;
@@ -36,7 +40,7 @@ in {
     };
 
     haskellPackages = mkOption {
-      default = pkgs.haskellPackages;
+      default = nixos_21_11_Snapshot.haskellPackages;
       defaultText = literalExample "pkgs.haskellPackages";
       example = literalExample "pkgs.haskell.packages.ghc784";
       description = ''

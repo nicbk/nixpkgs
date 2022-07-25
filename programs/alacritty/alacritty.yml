@@ -3,7 +3,6 @@ font:
     family: DejaVuSansMono Nerd Font
   size: 15.0
 
-background_opacity: 0.3
 colors:
   # Default colors
   primary:
@@ -34,3 +33,6 @@ colors:
     magenta: '0xff00ff'
     cyan:    '0x00ffff'
     white:   '0xffffff'
+
+window:
+  opacity: 0.3

@@ -115,8 +115,8 @@ main = do
                 getWindowIconPixbufFromEWMH <|||>
                 getWindowIconPixbufFromDesktopEntry <|||>
                 getWindowIconPixbufFromChrome <|||>
-                unscaledDefaultGetWindowIconPixbuf <|||>
-                (\size _ -> lift $ loadPixbufByName size "application-default-icon")
+                unscaledDefaultGetWindowIconPixbuf -- <|||>
+--                (\size _ -> lift $ loadPixbufByName size "application-default-icon")
       layout = layoutNew defaultLayoutConfig
       windows = windowsNew defaultWindowsConfig
 

@@ -28,8 +28,8 @@ in
     ./programs/startx
     ./programs/system
     ./programs/tmux
-    ./programs/weechat
     ./programs/xournalpp
+    ./programs/xsetwacom
     ./programs/zathura
     ./services/dunst
     ./services/gpg-agent
@@ -57,7 +57,6 @@ in
       file
       imagemagick
       inkscape
-      multimc
       gimp
       scrot
       blender
@@ -74,7 +73,10 @@ in
       torsocks
       openvpn
       networkmanager-openvpn
+      networkmanager-openconnect
+      networkmanagerapplet
       zoom-us
+      weechat
       gnome.pomodoro
       gnome.gnome-calendar
       libreoffice
@@ -87,16 +89,19 @@ in
       sshfs-fuse
       singularity
       trash-cli
+      rawtherapee
       octaveFull
       qt5ct
-      veikk-linux-driver-gui
       transmission-gtk
+      jmtpfs
+      lxappearance
       unstablePkgs.jdk
       unstablePkgs.unison-ucm
       unstablePkgs.tor-browser-bundle-bin
+      unstablePkgs.polymc
     ];
 
-    stateVersion = "21.11";
+    stateVersion = "22.05";
     username = private-config.userName;
     homeDirectory = private-config.userHome;
   };

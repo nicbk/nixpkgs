@@ -1,6 +1,9 @@
 { config, pkgs, lib, ... }:
 
 let
+  pkgs_21_11 = import (builtins.fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/7d5956bf56e1f300c6668704b5e9c4cd8f5296cd.tar.gz";
+  }) {};
   private-config = import ./private {
     config = config;
   };
@@ -54,7 +57,6 @@ in
     ];
     extraModulePackages = with config.boot.kernelPackages; [
       acpi_call
-      veikk-linux-driver
     ];
   };
 
@@ -86,6 +88,7 @@ in
   programs = {
     dconf.enable = true;
     light.enable = true;
+    steam.enable = true;
   };
 
   services = {
@@ -109,11 +112,19 @@ in
       xkbOptions = "altwin:prtsc_rwin";
       xkbVariant = "altgr-intl";
       displayManager.startx.enable = true;
+      gdk-pixbuf.modulePackages = [ pkgs_21_11.librsvg ];
       windowManager = {
         xmonad.enable = true;
         xmonad.enableContribAndExtras = true;
       };
-      libinput.enable = true;
+      wacom.enable = true;
+      libinput = {
+        enable = true;
+        touchpad = {
+          naturalScrolling = true;
+          clickMethod = "clickfinger";
+        };
+      };
       config =
       ''
         Section "Monitor"
@@ -147,7 +158,7 @@ in
           DefaultDepth    24
           Option         "Stereo" "0"
           Option         "nvidiaXineramaInfoOrder" "DFP-3"
-          Option         "metamodes" "DP-2: nvidia-auto-select +6400+0, DP-1: nvidia-auto-select +1920+0"
+          Option         "metamodes" "DP-2: nvidia-auto-select +4480+0, DP-1: nvidia-auto-select +2560+0"
           Option         "SLI" "Off"
           Option         "MultiGPU" "Off"
           Option         "BaseMosaic" "off"
@@ -158,6 +169,8 @@ in
       '';
     };
   };
+
+  gtk.iconCache.enable = true;
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -241,5 +254,5 @@ in
     };
   };
 
-  system.stateVersion = "21.11";
+  system.stateVersion = "22.05";
 }
